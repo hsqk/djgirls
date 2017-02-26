@@ -1,0 +1,14 @@
+{% extends 'blog/base_backend.html' %}
+
+{% block content %}
+    <h1>Transaction completed</h1>
+
+    {% for item in transacted_items %}
+        <p>{{ item }} </p>
+    {% endfor %}
+    
+    <p> Total: ${{ total_price }} </p>
+    <p> Thank you for shopping with us :D </p>
+
+{% endblock %}
+

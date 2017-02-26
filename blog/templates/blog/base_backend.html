@@ -1,0 +1,31 @@
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>Clothesline: A lifeline for your clothes!</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+            {% block content %}
+            {% endblock %}
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'admin:index' %}" class="top-menu">Admin page</a>
+            <a href="{% url 'seller_new' %}" class="top-menu">Add seller</a>
+            <a href="{% url 'clothes_new' %}" class="top-menu">Add clothes</a>
+            <a href="{% url 'sale' %}" class="top-menu">Sale</a>
+            <a href="{% url 'refund' %}" class="top-menu">Refund</a>
+
+            <a href="{% url 'clothes_list' %}" class="top-menu">Clothes for sale</a>
+
+            <a href="{% url 'seller_list' %}" class="top-menu">Sellers' stats</a>
+            
+            
+            <p class="top-menu">Hello {{ user.username }} ! <small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
+        {% endif %}
+
+    </body>
+</html>
