@@ -47,3 +47,9 @@ class ReturnForm(forms.ModelForm):
         model = Clothes
         fields = ('item_code',)
 
+class SettlementForm(forms.ModelForm):
+    
+    class Meta:
+        model = Seller
+        fields = ('seller_code',)
+

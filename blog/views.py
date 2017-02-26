@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Seller, Clothes
-from .forms import SellerForm, ClothesForm, SaleForm, RefundForm, ReturnForm, RecycleForm
+from .forms import SellerForm, ClothesForm, SaleForm, RefundForm, ReturnForm, RecycleForm, SettlementForm
 import re
 
 # Create your views here.
@@ -275,6 +275,51 @@ def return_to_owner(request):
     else:
         form = ReturnForm()
     return render(request, 'blog/return.html', {'form': form})
+
+
+
+@login_required
+def settlement(request):
+    if request.method == 'POST':
+        form = SettlementForm(request.POST)
+        if form.is_valid():
+            settlement_1 = form.save(commit=False)
+            seller_code = settlement_1.seller_code.upper()
+            seller = Seller.objects.get(seller_code = seller_code)
+            seller_name = seller.name
+            seller_returns = Clothes.objects.filter(owner = seller, recycle = False, sold = False)
+            returns, recycles, sold = dict(), dict(), dict()
+            for i in seller_returns:
+                returns[i.item_code] = i.description
+            seller_payment = seller.earnings
+            seller_recycles = Clothes.objects.filter(owner = seller, recycle = True, sold = False)
+            for i in seller_recycles:
+                recycles[i.item_code] = i.description
+            seller_sold = Clothes.objects.filter(owner = seller, sold = True)
+            for i in seller_sold:
+                sold[i.item_code] = i.description
+      
+            return render(request, 'blog/settlement_details.html', {'seller_code': seller_code, 'seller_name': seller_name, 'seller_returns': seller_returns, 'seller_payment': seller_payment, 'seller_recycles': seller_recycles, 'seller_sold':seller_sold})
+        else:
+            return redirect('settlement')
+    else:
+        form = SettlementForm()
+    return render(request, 'blog/settlement.html', {'form': form})
+
+@login_required
+def unsettled(request):
+    peeps = Seller.objects.filter(settled = False)
+    return render(request, 'blog/unsettled.html', {'peeps': peeps})
+
+'''
+            request.session['seller_code'] = seller_code
+            request.session['seller_name'] = seller_name
+            request.session['seller_returns'] = returns
+            request.session['seller_payment'] = seller_payment
+            request.session['seller_recycles'] = recycles
+            request.session['seller_sold'] = sold
+            '''
+
 
 '''
 

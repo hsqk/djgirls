@@ -1,0 +1,13 @@
+{% extends 'blog/base_backend.html' %}
+
+{% block content %}
+    <h1>Unsettled people</h1>
+
+    <ol>
+    {% for person in peeps %}
+        <li> {{ person.seller_code }}: {{ person.name }}, {{ person.mobile }} </li>
+    {% endfor %}
+    </ol>
+
+{% endblock %}
+

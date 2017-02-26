@@ -1,0 +1,12 @@
+{% extends 'blog/base_backend.html' %}
+
+{% block content %}
+    <h1>Settlement</h1>
+    <form method="POST" class="settlement-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Search</button>
+    </form>
+    <p> Enter code of seller (one only) e.g. RR </p>
+
+{% endblock %}
+

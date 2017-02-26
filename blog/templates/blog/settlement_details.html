@@ -1,0 +1,14 @@
+{% extends 'blog/base_backend.html' %}
+
+{% block content %}
+    <h1>Settlement details</h1>
+<ul>
+{{ seller_code }} {{ seller_name }}
+<p> To return: {% for item in seller_returns %} <li> {{ item }} </li> {% endfor %}   </p>
+<p> To recycle: {% for item in seller_recycles %} <li> {{ item }} </li> {% endfor %}   </p>
+<p> Sold: {% for item in seller_sold %} <li> {{ item }} </li> {% endfor %}  </p>
+<p> Earnings: ${{ seller_payment }} </p>
+</ul>
+
+{% endblock %}
+
