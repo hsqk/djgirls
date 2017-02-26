@@ -9,6 +9,8 @@ urlpatterns = [
     url(r'^seller/(?P<pk>\d+)/edit/$', views.seller_edit, name='seller_edit'),
     url(r'^seller/(?P<pk>\d+)/remove/$', views.seller_remove, name='seller_remove'),
     
+    url(r'^event_stats/$', views.event_stats, name='event_stats'),
+    
     url(r'^clothes/new/$', views.clothes_new, name='clothes_new'),
     url(r'^clothes/(?P<pk>\d+)/edit/$', views.clothes_edit, name='clothes_edit'),
     url(r'^clothes/(?P<pk>\d+)/remove/$', views.clothes_remove, name='clothes_remove'),

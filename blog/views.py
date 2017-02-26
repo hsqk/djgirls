@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Seller, Clothes
 from .forms import SellerForm, ClothesForm, SaleForm, RefundForm, ReturnForm, RecycleForm, SettlementForm
-import re
+import re, math
 
 # Create your views here.
 
@@ -14,6 +14,27 @@ def seller_list(request):
 def clothes_list(request):
     clothes = Clothes.objects.order_by('owner', 'price')
     return render(request, 'blog/clothes_list.html', {'clothes':clothes})
+
+def event_stats(request):
+    clothes = Clothes.objects.all()
+    qty_received = len(clothes)
+    clothes_sellable = Clothes.objects.all().exclude(price = 0)
+    qty_sellable = len(clothes_sellable)
+    value = 0
+    for i in clothes:
+        value += i.price
+    clothes_sold = Clothes.objects.filter(sold = True)
+    qty_sold = len(clothes_sold)
+    sold_value = 0
+    for i in clothes_sold:
+        sold_value += i.price
+    sellers = Seller.objects.all()
+    sellers_number = len(sellers)
+    shoppers = 'TBA'
+    
+    avg_ask = round(value/qty_sellable, 2)
+    avg_bid = round(sold_value/qty_sold, 2)
+    return render(request, 'blog/event_stats.html', {'qty_received': qty_received, 'qty_sellable': qty_sellable, 'value': value, 'qty_sold': qty_sold, 'sold_value': sold_value, 'sellers_number': sellers_number, 'shoppers': shoppers, 'avg_ask': avg_ask, 'avg_bid': avg_bid })
 
 
 '''
@@ -310,15 +331,6 @@ def settlement(request):
 def unsettled(request):
     peeps = Seller.objects.filter(settled = False)
     return render(request, 'blog/unsettled.html', {'peeps': peeps})
-
-'''
-            request.session['seller_code'] = seller_code
-            request.session['seller_name'] = seller_name
-            request.session['seller_returns'] = returns
-            request.session['seller_payment'] = seller_payment
-            request.session['seller_recycles'] = recycles
-            request.session['seller_sold'] = sold
-            '''
 
 
 '''
