@@ -1,0 +1,9 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% for seller in sellers %}
+        <div class="seller">
+            <p>{{ seller.name }} contributed {{ seller.qty_in }} clothes and has earned ${{ seller.earnings }} so far. </p>
+        </div>
+    {% endfor %}
+{% endblock %}

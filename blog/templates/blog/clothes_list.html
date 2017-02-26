@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% for clothing in clothes %}
+        <div class="clothing">
+            <p>{{ clothing.item_code }}: {{ clothing.description }}, by {{ clothing.owner }}. {{ clothing.price }} {% if clothing.sold %} [Sold!] {% endif %} </p>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+<!-- 
+    <table>
+    <tr>
+        <td>  Item number </td>
+        <td> Description </td>
+        <td> From </td>
+        <td> Price </td>
+        <td> Status </td>
+
+
+        <tr>
+            <td>{{ clothing.item_code }}</td>
+            <td> {{ clothing.description }} </td>
+            <td> {{ clothing.owner }} </td>
+            <td> {{ clothing.price }} </td>
+            <td> {% if clothing.sold %} SOLD {% endif %} </td>
+        </tr>
+
+    </table>
+
+
+-->

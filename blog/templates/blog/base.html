@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Django Girls blog</title>
+        <title>Clothesline: A lifeline for your clothes!</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
@@ -11,12 +11,18 @@
     <body>
         <div class="page-header">
         {% if user.is_authenticated %}
-            <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+            <a href="{% url 'admin:index' %}" class="top-menu">Admin page</a>
+            <a href="{% url 'seller_new' %}" class="top-menu">Add seller</a>
+            <a href="{% url 'clothes_new' %}" class="top-menu">Add clothes</a>
+            <a href="{% url 'seller_new' %}" class="top-menu">Do not recycle</a>
+            <a href="{% url 'sale' %}" class="top-menu">Record sale</a>
+            
             <p class="top-menu">Hello {{ user.username }} <small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
-        {% else %}
-            <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
         {% endif %}
-            <h1><a href="/">Django Girls Blog</a></h1>
+            <h1><a href="/">Clothesline</a></h1>
+            <h4><a href="/">A lifeline for your clothes!</a></h4>
+            <a href="{% url 'clothes_list' %}" class="top-menu">Clothes for sale</a>
+            <a href="{% url 'seller_list' %}" class="top-menu">Sellers' stats</a>
         </div>
         <div class="content container">
             <div class="row">
@@ -26,6 +32,9 @@
                 </div>
             </div>
         </div>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
+        {% endif %}
     </body>
 </html>
 
