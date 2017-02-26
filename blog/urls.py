@@ -13,6 +13,10 @@ urlpatterns = [
     url(r'^clothes/(?P<pk>\d+)/edit/$', views.clothes_edit, name='clothes_edit'),
     url(r'^clothes/(?P<pk>\d+)/remove/$', views.clothes_remove, name='clothes_remove'),
     url(r'^sale/$', views.sale, name='sale'),
+    url(r'^refund/$', views.refund, name='refund'),
+    url(r'^transaction_details/$', views.transaction_details, name='transaction_details'),
+    url(r'^recycle/$', views.recycle, name='recycle'),
+    url(r'^return/$', views.return_to_owner, name='return'),
 
 ]
 

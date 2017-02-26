@@ -28,3 +28,22 @@ class SaleForm(forms.ModelForm):
         model = Clothes
         fields = ('item_code',)
 
+class RefundForm(forms.ModelForm):
+    
+    class Meta:
+        model = Clothes
+        fields = ('item_code',)
+
+
+class RecycleForm(forms.ModelForm):
+    
+    class Meta:
+        model = Clothes
+        fields = ('item_code',)
+
+class ReturnForm(forms.ModelForm):
+    
+    class Meta:
+        model = Clothes
+        fields = ('item_code',)
+

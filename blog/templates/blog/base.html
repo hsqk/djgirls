@@ -10,14 +10,6 @@
     </head>
     <body>
         <div class="page-header">
-        {% if user.is_authenticated %}
-            <a href="{% url 'admin:index' %}" class="top-menu">Admin page</a>
-            <a href="{% url 'seller_new' %}" class="top-menu">Add seller</a>
-            <a href="{% url 'clothes_new' %}" class="top-menu">Add clothes</a>
-            <a href="{% url 'sale' %}" class="top-menu">Record sale</a>
-            
-            <p class="top-menu">Hello {{ user.username }} <small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
-        {% endif %}
             <h1><a href="/">Clothesline</a></h1>
             <h4><a href="/">A lifeline for your clothes!</a></h4>
             <a href="{% url 'clothes_list' %}" class="top-menu">Clothes for sale</a>
@@ -34,6 +26,22 @@
         {% if not user.is_authenticated %}
             <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
         {% endif %}
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'admin:index' %}" class="top-menu">Admin page</a>
+            <a href="{% url 'seller_new' %}" class="top-menu">Add seller</a>
+            <a href="{% url 'clothes_new' %}" class="top-menu">Add clothes</a>
+            <a href="{% url 'sale' %}" class="top-menu">Sale</a>
+            <a href="{% url 'refund' %}" class="top-menu">Refund</a>
+
+            <a href="{% url 'clothes_list' %}" class="top-menu">Clothes for sale</a>
+
+            <a href="{% url 'seller_list' %}" class="top-menu">Sellers' stats</a>
+            
+            
+            <p class="top-menu">Hello {{ user.username }} ! <small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
+        {% endif %}
+
     </body>
 </html>
 

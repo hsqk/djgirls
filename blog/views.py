@@ -2,7 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Seller, Clothes
-from .forms import SellerForm, ClothesForm, SaleForm
+from .forms import SellerForm, ClothesForm, SaleForm, RefundForm, ReturnForm, RecycleForm
+import re
 
 # Create your views here.
 
@@ -47,7 +48,7 @@ def seller_new(request):
             newly_added_seller = Seller.objects.get(pk = seller.pk)
             newly_added_seller.seller_code = n2l[seller.pk]
             newly_added_seller.save()
-            return redirect('seller_list')
+            return redirect('clothes_new')
     else:
         form = SellerForm()
     return render(request, 'blog/seller_edit.html', {'form': form})
@@ -93,7 +94,7 @@ def clothes_new(request):
                 newly_added_clothes.save()
                 clothes.owner.qty_in += 1
                 clothes.owner.save()
-            return redirect('clothes_list')
+            return redirect('clothes_new')
     else:
         form = ClothesForm()
     return render(request, 'blog/clothes_edit.html', {'form': form})
@@ -121,7 +122,7 @@ def clothes_remove(request, pk):
     return redirect('clothes_list')
 
 
-
+@login_required
 def sale(request):
     if request.method == 'POST':
         form = SaleForm(request.POST)
@@ -131,24 +132,150 @@ def sale(request):
             temp = temp.upper()
             item_code = temp.split(',')
             for i in range(len(item_code)):
+                if len(item_code[i]) < 2:
+                    continue
                 curr_item = Clothes.objects.get(item_code = item_code[i])
                 if curr_item.sold == True:
                     raise Exception('an item is already sold')
+            
+            request.session['transacted_items'] = []
+            request.session['total_price'] = 0
+            
             for i in range(len(item_code)):
+                if len(item_code[i]) < 2:
+                    continue
                 curr_item = Clothes.objects.get(item_code = item_code[i])
+                tempd = {'code': curr_item.item_code, 'description': curr_item.description, 'owner': str(curr_item.owner), 'price': curr_item.price}
+                request.session['transacted_items'].append(tempd)
+                request.session['total_price'] += curr_item.price
                 curr_item.sold = True
                 curr_item.save()
                 curr_item.owner.qty_sold += 1
                 curr_item.owner.qty_left = curr_item.owner.qty_in - curr_item.owner.qty_sold
                 curr_item.owner.earnings += curr_item.price
                 curr_item.owner.save()
-            return redirect('clothes_list')
+            return redirect('transaction_details')
     else:
         form = SaleForm()
     return render(request, 'blog/sale.html', {'form': form})
-    
-    
-    
+
+
+@login_required
+def refund(request):
+    if request.method == 'POST':
+        form = RefundForm(request.POST)
+        if form.is_valid():
+            refund_ini = form.save(commit=False)
+            temp = refund_ini.item_code.replace(' ', '')
+            temp = temp.upper()
+            item_code = temp.split(',')
+            for i in range(len(item_code)):
+                if len(item_code[i]) < 2:
+                    continue
+                curr_item = Clothes.objects.get(item_code = item_code[i])
+                if curr_item.sold == False:
+                    raise Exception('an item is not even sold yet')
+
+            request.session['transacted_items'] = []
+            request.session['total_price'] = 0
+            
+            for i in range(len(item_code)):
+                if len(item_code[i]) < 2:
+                    continue
+                curr_item = Clothes.objects.get(item_code = item_code[i])
+                tempd = {'code': curr_item.item_code, 'description': curr_item.description, 'owner': str(curr_item.owner), 'price': curr_item.price}
+                request.session['transacted_items'].append(tempd)
+                request.session['total_price'] += curr_item.price
+                curr_item.sold = False
+                curr_item.save()
+                curr_item.owner.qty_sold -= 1
+                curr_item.owner.qty_left = curr_item.owner.qty_in - curr_item.owner.qty_sold
+                curr_item.owner.earnings -= curr_item.price
+                curr_item.owner.save()
+            return redirect('transaction_details')
+    else:
+        form = SaleForm()
+    return render(request, 'blog/refund.html', {'form': form})
+
+
+@login_required
+def transaction_details(request):
+    if 'transacted_items' in request.session:
+        transacted_items = request.session['transacted_items']
+        total_price = request.session['total_price']
+    return render(request, 'blog/transaction_details.html', {'transacted_items': transacted_items, 'total_price': total_price})
+
+
+@login_required
+def recycle(request):
+    if request.method == 'POST':
+        form = RecycleForm(request.POST)
+        if form.is_valid():
+            recycle_ini = form.save(commit=False)
+            all_flag = 0
+            for i in recycle_ini.item_code:
+                if i in '0123456789':
+                    break
+            else:
+                all_flag = 1
+            temp = recycle_ini.item_code.replace(' ', '')
+            temp = temp.upper()
+            if all_flag:
+                seller_codes = temp.split(',')
+                for s_code in seller_codes:
+                    seller = Seller.objects.get(seller_code = s_code)
+                    seller_items = Clothes.objects.filter(owner = seller)
+                    for i in seller_items:
+                        i.recycle = True
+                        i.save()
+            else:
+                item_code = temp.split(',')
+                for i in range(len(item_code)):
+                    if len(item_code[i]) < 2:
+                        continue
+                    curr_item = Clothes.objects.get(item_code = item_code[i])
+                    curr_item.recycle = True
+                    curr_item.save()
+            return redirect('recycle')
+    else:
+        form = RecycleForm()
+    return render(request, 'blog/recycle.html', {'form': form})
+
+@login_required
+def return_to_owner(request):
+    if request.method == 'POST':
+        form = ReturnForm(request.POST)
+        if form.is_valid():
+            return_ini = form.save(commit=False)
+            all_flag = 0
+            for i in return_ini.item_code:
+                if i in '0123456789':
+                    break
+            else:
+                all_flag = 1
+            temp = return_ini.item_code.replace(' ', '')
+            temp = temp.upper()
+            if all_flag:
+                seller_codes = temp.split(',')
+                for s_code in seller_codes:
+                    seller = Seller.objects.get(seller_code = s_code)
+                    seller_items = Clothes.objects.filter(owner = seller)
+                    for i in seller_items:
+                        i.recycle = False
+                        i.save()
+            else:
+                item_code = temp.split(',')
+                for i in range(len(item_code)):
+                    if len(item_code[i]) < 2:
+                        continue
+                    curr_item = Clothes.objects.get(item_code = item_code[i])
+                    curr_item.recycle = False
+                    curr_item.save()
+            return redirect('return')
+    else:
+        form = ReturnForm()
+    return render(request, 'blog/return.html', {'form': form})
+
 '''
 
 def post_list(request):
