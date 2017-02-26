@@ -53,4 +53,5 @@ class Clothes(models.Model):
     def add(self):
         self.save()
 
-
+    def __str__(self):
+        return self.item_code

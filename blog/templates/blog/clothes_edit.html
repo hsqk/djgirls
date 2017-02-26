@@ -5,5 +5,11 @@
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
+    <p> You can enter multiple items at once, as long as they have the same price! </p>
+        <ol> 1. Select owner from dropdown </ol>
+        <ol> 2. Enter items' price </ol>
+        <ol> 3. Enter descriptions. Each item's description should be one sentence, i.e. it must end with a full stop. Do not use full stops within the description of one item. </ol>
+        <ol> E.g.: White tank top, S. Black fairy skirt, M. </ol>
+    <p> (The code will split the line of descriptions at the full stops) </p>
 {% endblock %}
 

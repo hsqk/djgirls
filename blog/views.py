@@ -83,6 +83,8 @@ def clothes_new(request):
             clothes_ini = form.save(commit=False)
             descriptions = clothes_ini.description.split('.')
             for i in range(len(descriptions)):
+                if len(descriptions[i]) < 2:
+                    continue
                 clothes = Clothes(owner=clothes_ini.owner, price=clothes_ini.price)
                 clothes.description = descriptions[i]
                 clothes.save()
@@ -113,8 +115,11 @@ def clothes_edit(request, pk):
 @login_required
 def clothes_remove(request, pk):
     clothes = get_object_or_404(Clothes, pk=pk)
+    clothes.owner.qty_in -= 1
+    clothes.owner.save()
     clothes.delete()
     return redirect('clothes_list')
+
 
 
 def sale(request):
@@ -122,7 +127,9 @@ def sale(request):
         form = SaleForm(request.POST)
         if form.is_valid():
             sales_ini = form.save(commit=False)
-            item_code = sales_ini.item_code.split(',')
+            temp = sales_ini.item_code.replace(' ', '')
+            temp = temp.upper()
+            item_code = temp.split(',')
             for i in range(len(item_code)):
                 curr_item = Clothes.objects.get(item_code = item_code[i])
                 if curr_item.sold == True:
@@ -132,7 +139,7 @@ def sale(request):
                 curr_item.sold = True
                 curr_item.save()
                 curr_item.owner.qty_sold += 1
-                curr_item.owner.qty_left -= 1
+                curr_item.owner.qty_left = curr_item.owner.qty_in - curr_item.owner.qty_sold
                 curr_item.owner.earnings += curr_item.price
                 curr_item.owner.save()
             return redirect('clothes_list')
