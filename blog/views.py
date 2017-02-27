@@ -111,11 +111,18 @@ def clothes_new(request):
                 clothes.description = descriptions[i]
                 clothes.save()
                 newly_added_clothes = Clothes.objects.get(pk = clothes.pk)
-                taken_numbers = []
+                taken_codes = []
                 owners_clothes = Clothes.objects.filter(owner = clothes_ini.owner)
                 for i in owners_clothes:
                     taken_numbers.append(i.item_code)
-                if len(owners_clothes) == 0:
+                taken_numbers = []
+                for i in taken_codes:
+                    temp_str = ''
+                    for j in temp_str:
+                        if j in '0123456789':
+                            temp_str += j
+                    taken_numbers.append(int(temp_str))
+                if len(taken_numbers) == 0:
                     newly_added_clothes.item_code = 1
                 else:
                     newly_added_clothes.item_code = max(taken_numbers)+1
