@@ -114,7 +114,8 @@ def clothes_new(request):
                 taken_codes = []
                 owners_clothes = Clothes.objects.filter(owner = clothes_ini.owner)
                 for i in owners_clothes:
-                    taken_codes.append(i.item_code)
+                    if i.item_code != None:
+                        taken_codes.append(i.item_code)
                 taken_numbers = []
                 for i in taken_codes:
                     temp_str = ''
@@ -126,7 +127,7 @@ def clothes_new(request):
                     newly_added_clothes.item_code = 1
                 else:
                     newly_added_clothes.item_code = max(taken_numbers)+1
-                newly_added_clothes.item_code = clothes.owner.seller_code + newly_added_clothes.item_code
+                newly_added_clothes.item_code = clothes.owner.seller_code + str(newly_added_clothes.item_code)
                 newly_added_clothes.save()
                 clothes.owner.qty_in += 1
                 clothes.owner.save()
