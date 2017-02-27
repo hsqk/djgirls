@@ -114,7 +114,7 @@ def clothes_new(request):
                 taken_codes = []
                 owners_clothes = Clothes.objects.filter(owner = clothes_ini.owner)
                 for i in owners_clothes:
-                    taken_numbers.append(i.item_code)
+                    taken_codes.append(i.item_code)
                 taken_numbers = []
                 for i in taken_codes:
                     temp_str = ''
