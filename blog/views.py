@@ -118,7 +118,7 @@ def clothes_new(request):
                 taken_numbers = []
                 for i in taken_codes:
                     temp_str = ''
-                    for j in temp_str:
+                    for j in i:
                         if j in '0123456789':
                             temp_str += j
                     taken_numbers.append(int(temp_str))
