@@ -34,6 +34,7 @@ class Seller(models.Model):
     #
     earnings = models.IntegerField(default = 0)
     #
+    vouchers = models.BooleanField(default = False)
     settled = models.BooleanField(default = False)
     
     def add(self):
@@ -46,7 +47,7 @@ class Clothes(models.Model):
     item_code = models.CharField(max_length = 100, null=True, blank=True)
     owner = models.ForeignKey(Seller, on_delete = models.CASCADE)
     price = models.IntegerField()
-    description = models.CharField(max_length = 200)
+    description = models.TextField()
     sold = models.BooleanField(default = False)
     recycle = models.BooleanField(default = True)
     

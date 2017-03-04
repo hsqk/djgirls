@@ -14,7 +14,7 @@ class SellerForm(forms.ModelForm):
     
     class Meta:
         model = Seller
-        fields = ('matric_no', 'name', 'room', 'mobile', 'email')
+        fields = ('matric_no', 'name', 'room', 'mobile', 'email', 'vouchers')
 
 class ClothesForm(forms.ModelForm):
     
