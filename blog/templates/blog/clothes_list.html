@@ -3,9 +3,11 @@
 {% block content %}
     {% for clothing in clothes %}
         <div class="clothing">
-            <p>{{ clothing.item_code }}: {{ clothing.description }}, by {{ clothing.owner }}. {{ clothing.price }} {% if clothing.sold %} [Sold!] {% endif %} </p>
+            <p>[{{ clothing.item_code }}] {{ clothing.description }}  {% if clothing.sold %} <div style="color:maroon;text-align:right">[Sold!]</div> {% else %} <div style="color:seagreen;text-align:right">${{ clothing.price }}</div>  {% endif %} </p>
+            <hr>
         </div>
     {% endfor %}
+    <!-- {{ clothing.owner }} -->
 {% endblock %}
 
 <!-- 

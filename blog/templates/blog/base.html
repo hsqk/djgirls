@@ -7,64 +7,77 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
         <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Alex+Brush|Allura|Cormorant+Garamond|Life+Savers|Parisienne|Sacramento|Tangerine" rel="stylesheet"> 
     </head>
     <body>
-        <div class="page-header">
-            <h1><a href="/">Clothesline</a></h1>
-            <h4><a href="/">A lifeline for your clothes!</a></h4>
-            <a href="{% url 'clothes_list' %}" class="top-menu">Clothes for sale</a>
-            <a href="{% url 'seller_list' %}" class="top-menu">Sellers' stats</a>
-            <a href="{% url 'event_stats' %}" class="top-menu">Event stats</a> 
-        </div>
-        <div class="content container">
-            <div class="row">
-                <div class="col-md-8">
-                {% block content %}
-                {% endblock %}
-                </div>
-            </div>
-        </div>
+    
         {% if not user.is_authenticated %}
-            <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
+            <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock" style="float:right; color:grey; font-size:0.75em"></span></a>
         {% endif %}
 
         {% if user.is_authenticated %}
-        <table>            
-            <tr>
-                <td> <a href="{% url 'clothes_list' %}" class="top-menu">Clothes for sale</a> </td>
-                <td> <a href="{% url 'seller_list' %}" class="top-menu">Sellers' stats</a> </td>
-                <td> <a href="{% url 'event_stats' %}" class="top-menu">Event stats</a> </td>
-            </tr>
-            
-            
-            <tr>
-                <td> <a href="{% url 'admin:index' %}" class="top-menu">Admin page</a> </td>
-                <td> <a href="{% url 'seller_new' %}" class="top-menu">Add seller</a> </td>
-                <td> <a href="{% url 'clothes_new' %}" class="top-menu">Add clothes</a> </td>
-            </tr>
-            
-            <tr>
-                <td> <a href="{% url 'sale' %}" class="top-menu">Sale</a> </td>
-                <td> <a href="{% url 'refund' %}" class="top-menu">Refund</a> </td>
-                <td> <a class="top-menu">Price slash</a> </td>
-            </tr>
-            
-            <tr>
-                <td> <a href="{% url 'recycle' %}" class="top-menu">Flag for recycling</a> </td>
-                <td> <a href="{% url 'return' %}" class="top-menu">Flag for return</a> </td>
-                <td> </td>
-            </tr>
-            
-            <tr>
-                <td> <a href="{% url 'settlement' %}" class="top-menu">Settlement</a> </td>
-                <td> <a href="{% url 'unsettled' %}" class="top-menu">Unsettled</a> </td>
-                <td> </td>
-            </tr>
-            
-        </table>
+            <a href="{% url 'seller_new' %}" style="float:right;">Enter backend</a> 
+       
 
             <p class="top-menu">Hello {{ user.username }} ! <small>(<a href="{% url 'logout' %}">Log out</a>)</small></p>
         {% endif %}
+    
+        <!-- announcements here -->
+        <div class="content container">  
+            <div class="row" id="page-header">
+                Announcement: We want your clothes!
+            </div>
+        </div>
+
+        <div class="content container">
+            <div class = "centre_link_no_deco">
+                <a href="/">
+                <div class='header_title'>Clothesline</div>
+                <div class='header_tagline'>...a lifeline for your clothes! </div>
+                </a>
+                    
+                <a href="{% url 'event_stats' %}" ><span class='glyphicon glyphicon-question-sign' style="font-size:1.75em" aria-hidden='true'></span></a>
+                &emsp;
+                <a href="{% url 'clothes_list' %}" class="top-menu"><span class='glyphicon glyphicon-search' style="font-size:1.75em" aria-hidden='true'></a>
+                &emsp;
+                <a href="{% url 'seller_list' %}" class="top-menu"><span class='glyphicon glyphicon-user' style="font-size:1.75em" aria-hidden='true'></a>
+
+            </div>
+        </div>
+        <div class="content container">
+            <div class="row">
+
+                <div class="col-md-2"> </div>
+
+                <div class="col-md-8 body_text">
+                <hr>
+                {% block content %}
+                {% endblock %}
+                </div>
+
+                <div class="col-md-2"> </div>
+
+            </div>
+        </div>
+
+
+        <div class="content container">
+            <div class="row">
+
+                <div class="col-md-2"> </div>
+
+                <div class="col-md-8 body_text">
+                    <div class="footer">
+                        <p> A GEQ project by G15A </p>
+                        <p> Sheng Yeow, Yi Qian, Shane, Ze Xi, Kenneth </p>
+                        <p> &copy; 2017 </p>
+                    </div>
+                </div>
+
+                <div class="col-md-2"> </div>
+
+            </div>
+        </div>
 
     </body>
 </html>
