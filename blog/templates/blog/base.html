@@ -10,6 +10,7 @@
         <link href="https://fonts.googleapis.com/css?family=Alex+Brush|Allura|Cormorant+Garamond|Life+Savers|Parisienne|Sacramento|Tangerine" rel="stylesheet"> 
     </head>
     <body>
+
     
         {% if not user.is_authenticated %}
             <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock" style="float:right; color:grey; font-size:0.75em"></span></a>
@@ -25,12 +26,16 @@
         <!-- announcements here -->
         <div class="content container">  
             <div class="row" id="page-header">
-                Announcement: We want your clothes!
+                Announcement: Our shop is live today from 1 p.m. onwards! Grab the good stuff before someone else does!
             </div>
         </div>
 
+        <div class="parallax bg_1"> 
+
         <div class="content container">
-            <div class = "centre_link_no_deco">
+            <div class='row'>
+            <div class='col-md-2'> </div>
+            <div class = "col-md-8 centre_link_no_deco">
                 <a href="/">
                 <div class='header_title'>Clothesline</div>
                 <div class='header_tagline'>...a lifeline for your clothes! </div>
@@ -41,13 +46,16 @@
                 <a href="{% url 'clothes_list' %}" class="top-menu"><span class='glyphicon glyphicon-search' style="font-size:1.75em" aria-hidden='true'></a>
                 &emsp;
                 <a href="{% url 'seller_list' %}" class="top-menu"><span class='glyphicon glyphicon-user' style="font-size:1.75em" aria-hidden='true'></a>
-
+            </div>
+            <div class='col-md-2'> </div>
             </div>
         </div>
+        
+
         <div class="content container">
             <div class="row">
 
-                <div class="col-md-2"> </div>
+                <div class="col-md-2">    </div>
 
                 <div class="col-md-8 body_text">
                 <hr>
@@ -78,7 +86,7 @@
 
             </div>
         </div>
-
+     </div>
     </body>
 </html>
 

@@ -33,7 +33,10 @@ def event_stats(request):
     shoppers = 'TBA'
     
     avg_ask = round(value/qty_sellable, 2)
-    avg_bid = round(sold_value/qty_sold, 2)
+    if qty_sold==0:
+        avg_bid=0
+    else:
+        avg_bid = round(sold_value/qty_sold, 2)
     return render(request, 'blog/event_stats.html', {'qty_received': qty_received, 'qty_sellable': qty_sellable, 'value': value, 'qty_sold': qty_sold, 'sold_value': sold_value, 'sellers_number': sellers_number, 'shoppers': shoppers, 'avg_ask': avg_ask, 'avg_bid': avg_bid })
 
 

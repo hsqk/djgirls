@@ -1,3 +1,17 @@
+.parallax.bg_1 {
+  /* The image used */
+    background-image: url("../img/");
+    
+    /* Full height */
+    height: 100%;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 #page-header {
     text-align: left;
     font-size: 12px;
@@ -22,6 +36,7 @@
 
 .centre_link_no_deco {
     text-align: center;
+    background-color:white;
 }
 
 .centre_link_no_deco a:hover{
@@ -45,6 +60,7 @@ body {
 
 .body_text {
     font-family: Georgia;
+    background-color:white;
 }
 
 .footer {
