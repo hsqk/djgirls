@@ -33,7 +33,7 @@ def event_stats(request):
     shoppers = 'TBA'
     
     avg_ask = round(value/qty_sellable, 2)
-    if qty_sold==0:
+    if not qty_sold:
         avg_bid=0
     else:
         avg_bid = round(sold_value/qty_sold, 2)
